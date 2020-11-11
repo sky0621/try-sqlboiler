@@ -45,7 +45,7 @@ func main() {
 	limit := 5
 
 	q := `
-		SELECT * FROM (
+		SELECT rownum, * FROM (
 			SELECT ROW_NUMBER() OVER (ORDER BY %s %s) AS rownum, *
 			FROM %s
 		) AS tmp
@@ -53,13 +53,13 @@ func main() {
 		AND rownum %s %d
 		LIMIT %d
 	`
-	results, err := boiled.Customers(qm.SQL(fmt.Sprintf(q,
+	var results []*CustomerWithRownum
+	if err := boiled.Customers(qm.SQL(fmt.Sprintf(q,
 		orderKey, orderDirection,
 		table,
 		baseCondition, compareSymbol, decodedCursor,
 		limit,
-	))).All(ctx, db)
-	if err != nil {
+	))).Bind(ctx, db, &results); err != nil {
 		log.Err(err).Send()
 		return
 	}
@@ -67,4 +67,9 @@ func main() {
 	for _, result := range results {
 		log.Info().Msgf("%#+v", result)
 	}
+}
+
+type CustomerWithRownum struct {
+	Rownum          int64
+	boiled.Customer `boil:",bind"`
 }
