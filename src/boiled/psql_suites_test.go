@@ -6,7 +6,7 @@ package boiled
 import "testing"
 
 func TestUpsert(t *testing.T) {
-	t.Run("Items", testItemsUpsert)
+	t.Run("Customers", testCustomersUpsert)
 
 	t.Run("Migrations", testMigrationsUpsert)
 }

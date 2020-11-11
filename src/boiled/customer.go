@@ -22,36 +22,39 @@ import (
 	"github.com/volatiletech/strmangle"
 )
 
-// Item is an object representing the database table.
-type Item struct {
-	ID        int64       `boil:"id" json:"id" toml:"id" yaml:"id"`
-	Name      string      `boil:"name" json:"name" toml:"name" yaml:"name"`
-	Price     int         `boil:"price" json:"price" toml:"price" yaml:"price"`
-	CreatedBy null.String `boil:"created_by" json:"created_by,omitempty" toml:"created_by" yaml:"created_by,omitempty"`
-	CreatedAt time.Time   `boil:"created_at" json:"created_at" toml:"created_at" yaml:"created_at"`
-	UpdatedBy null.String `boil:"updated_by" json:"updated_by,omitempty" toml:"updated_by" yaml:"updated_by,omitempty"`
-	UpdatedAt time.Time   `boil:"updated_at" json:"updated_at" toml:"updated_at" yaml:"updated_at"`
+// Customer is an object representing the database table.
+type Customer struct {
+	ID          int64       `boil:"id" json:"id" toml:"id" yaml:"id"`
+	Name        string      `boil:"name" json:"name" toml:"name" yaml:"name"`
+	Age         int         `boil:"age" json:"age" toml:"age" yaml:"age"`
+	Prefectures string      `boil:"prefectures" json:"prefectures" toml:"prefectures" yaml:"prefectures"`
+	CreatedBy   null.String `boil:"created_by" json:"created_by,omitempty" toml:"created_by" yaml:"created_by,omitempty"`
+	CreatedAt   time.Time   `boil:"created_at" json:"created_at" toml:"created_at" yaml:"created_at"`
+	UpdatedBy   null.String `boil:"updated_by" json:"updated_by,omitempty" toml:"updated_by" yaml:"updated_by,omitempty"`
+	UpdatedAt   time.Time   `boil:"updated_at" json:"updated_at" toml:"updated_at" yaml:"updated_at"`
 
-	R *itemR `boil:"-" json:"-" toml:"-" yaml:"-"`
-	L itemL  `boil:"-" json:"-" toml:"-" yaml:"-"`
+	R *customerR `boil:"-" json:"-" toml:"-" yaml:"-"`
+	L customerL  `boil:"-" json:"-" toml:"-" yaml:"-"`
 }
 
-var ItemColumns = struct {
-	ID        string
-	Name      string
-	Price     string
-	CreatedBy string
-	CreatedAt string
-	UpdatedBy string
-	UpdatedAt string
+var CustomerColumns = struct {
+	ID          string
+	Name        string
+	Age         string
+	Prefectures string
+	CreatedBy   string
+	CreatedAt   string
+	UpdatedBy   string
+	UpdatedAt   string
 }{
-	ID:        "id",
-	Name:      "name",
-	Price:     "price",
-	CreatedBy: "created_by",
-	CreatedAt: "created_at",
-	UpdatedBy: "updated_by",
-	UpdatedAt: "updated_at",
+	ID:          "id",
+	Name:        "name",
+	Age:         "age",
+	Prefectures: "prefectures",
+	CreatedBy:   "created_by",
+	CreatedAt:   "created_at",
+	UpdatedBy:   "updated_by",
+	UpdatedAt:   "updated_at",
 }
 
 // Generated where
@@ -169,70 +172,72 @@ func (w whereHelpertime_Time) GTE(x time.Time) qm.QueryMod {
 	return qmhelper.Where(w.field, qmhelper.GTE, x)
 }
 
-var ItemWhere = struct {
-	ID        whereHelperint64
-	Name      whereHelperstring
-	Price     whereHelperint
-	CreatedBy whereHelpernull_String
-	CreatedAt whereHelpertime_Time
-	UpdatedBy whereHelpernull_String
-	UpdatedAt whereHelpertime_Time
+var CustomerWhere = struct {
+	ID          whereHelperint64
+	Name        whereHelperstring
+	Age         whereHelperint
+	Prefectures whereHelperstring
+	CreatedBy   whereHelpernull_String
+	CreatedAt   whereHelpertime_Time
+	UpdatedBy   whereHelpernull_String
+	UpdatedAt   whereHelpertime_Time
 }{
-	ID:        whereHelperint64{field: "\"item\".\"id\""},
-	Name:      whereHelperstring{field: "\"item\".\"name\""},
-	Price:     whereHelperint{field: "\"item\".\"price\""},
-	CreatedBy: whereHelpernull_String{field: "\"item\".\"created_by\""},
-	CreatedAt: whereHelpertime_Time{field: "\"item\".\"created_at\""},
-	UpdatedBy: whereHelpernull_String{field: "\"item\".\"updated_by\""},
-	UpdatedAt: whereHelpertime_Time{field: "\"item\".\"updated_at\""},
+	ID:          whereHelperint64{field: "\"customer\".\"id\""},
+	Name:        whereHelperstring{field: "\"customer\".\"name\""},
+	Age:         whereHelperint{field: "\"customer\".\"age\""},
+	Prefectures: whereHelperstring{field: "\"customer\".\"prefectures\""},
+	CreatedBy:   whereHelpernull_String{field: "\"customer\".\"created_by\""},
+	CreatedAt:   whereHelpertime_Time{field: "\"customer\".\"created_at\""},
+	UpdatedBy:   whereHelpernull_String{field: "\"customer\".\"updated_by\""},
+	UpdatedAt:   whereHelpertime_Time{field: "\"customer\".\"updated_at\""},
 }
 
-// ItemRels is where relationship names are stored.
-var ItemRels = struct {
+// CustomerRels is where relationship names are stored.
+var CustomerRels = struct {
 }{}
 
-// itemR is where relationships are stored.
-type itemR struct {
+// customerR is where relationships are stored.
+type customerR struct {
 }
 
 // NewStruct creates a new relationship struct
-func (*itemR) NewStruct() *itemR {
-	return &itemR{}
+func (*customerR) NewStruct() *customerR {
+	return &customerR{}
 }
 
-// itemL is where Load methods for each relationship are stored.
-type itemL struct{}
+// customerL is where Load methods for each relationship are stored.
+type customerL struct{}
 
 var (
-	itemAllColumns            = []string{"id", "name", "price", "created_by", "created_at", "updated_by", "updated_at"}
-	itemColumnsWithoutDefault = []string{"name", "price", "created_by", "updated_by"}
-	itemColumnsWithDefault    = []string{"id", "created_at", "updated_at"}
-	itemPrimaryKeyColumns     = []string{"id"}
+	customerAllColumns            = []string{"id", "name", "age", "prefectures", "created_by", "created_at", "updated_by", "updated_at"}
+	customerColumnsWithoutDefault = []string{"name", "age", "prefectures", "created_by", "updated_by"}
+	customerColumnsWithDefault    = []string{"id", "created_at", "updated_at"}
+	customerPrimaryKeyColumns     = []string{"id"}
 )
 
 type (
-	// ItemSlice is an alias for a slice of pointers to Item.
-	// This should generally be used opposed to []Item.
-	ItemSlice []*Item
-	// ItemHook is the signature for custom Item hook methods
-	ItemHook func(context.Context, boil.ContextExecutor, *Item) error
+	// CustomerSlice is an alias for a slice of pointers to Customer.
+	// This should generally be used opposed to []Customer.
+	CustomerSlice []*Customer
+	// CustomerHook is the signature for custom Customer hook methods
+	CustomerHook func(context.Context, boil.ContextExecutor, *Customer) error
 
-	itemQuery struct {
+	customerQuery struct {
 		*queries.Query
 	}
 )
 
 // Cache for insert, update and upsert
 var (
-	itemType                 = reflect.TypeOf(&Item{})
-	itemMapping              = queries.MakeStructMapping(itemType)
-	itemPrimaryKeyMapping, _ = queries.BindMapping(itemType, itemMapping, itemPrimaryKeyColumns)
-	itemInsertCacheMut       sync.RWMutex
-	itemInsertCache          = make(map[string]insertCache)
-	itemUpdateCacheMut       sync.RWMutex
-	itemUpdateCache          = make(map[string]updateCache)
-	itemUpsertCacheMut       sync.RWMutex
-	itemUpsertCache          = make(map[string]insertCache)
+	customerType                 = reflect.TypeOf(&Customer{})
+	customerMapping              = queries.MakeStructMapping(customerType)
+	customerPrimaryKeyMapping, _ = queries.BindMapping(customerType, customerMapping, customerPrimaryKeyColumns)
+	customerInsertCacheMut       sync.RWMutex
+	customerInsertCache          = make(map[string]insertCache)
+	customerUpdateCacheMut       sync.RWMutex
+	customerUpdateCache          = make(map[string]updateCache)
+	customerUpsertCacheMut       sync.RWMutex
+	customerUpsertCache          = make(map[string]insertCache)
 )
 
 var (
@@ -243,24 +248,24 @@ var (
 	_ = qmhelper.Where
 )
 
-var itemBeforeInsertHooks []ItemHook
-var itemBeforeUpdateHooks []ItemHook
-var itemBeforeDeleteHooks []ItemHook
-var itemBeforeUpsertHooks []ItemHook
+var customerBeforeInsertHooks []CustomerHook
+var customerBeforeUpdateHooks []CustomerHook
+var customerBeforeDeleteHooks []CustomerHook
+var customerBeforeUpsertHooks []CustomerHook
 
-var itemAfterInsertHooks []ItemHook
-var itemAfterSelectHooks []ItemHook
-var itemAfterUpdateHooks []ItemHook
-var itemAfterDeleteHooks []ItemHook
-var itemAfterUpsertHooks []ItemHook
+var customerAfterInsertHooks []CustomerHook
+var customerAfterSelectHooks []CustomerHook
+var customerAfterUpdateHooks []CustomerHook
+var customerAfterDeleteHooks []CustomerHook
+var customerAfterUpsertHooks []CustomerHook
 
 // doBeforeInsertHooks executes all "before insert" hooks.
-func (o *Item) doBeforeInsertHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+func (o *Customer) doBeforeInsertHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
 	if boil.HooksAreSkipped(ctx) {
 		return nil
 	}
 
-	for _, hook := range itemBeforeInsertHooks {
+	for _, hook := range customerBeforeInsertHooks {
 		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
@@ -270,12 +275,12 @@ func (o *Item) doBeforeInsertHooks(ctx context.Context, exec boil.ContextExecuto
 }
 
 // doBeforeUpdateHooks executes all "before Update" hooks.
-func (o *Item) doBeforeUpdateHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+func (o *Customer) doBeforeUpdateHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
 	if boil.HooksAreSkipped(ctx) {
 		return nil
 	}
 
-	for _, hook := range itemBeforeUpdateHooks {
+	for _, hook := range customerBeforeUpdateHooks {
 		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
@@ -285,12 +290,12 @@ func (o *Item) doBeforeUpdateHooks(ctx context.Context, exec boil.ContextExecuto
 }
 
 // doBeforeDeleteHooks executes all "before Delete" hooks.
-func (o *Item) doBeforeDeleteHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+func (o *Customer) doBeforeDeleteHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
 	if boil.HooksAreSkipped(ctx) {
 		return nil
 	}
 
-	for _, hook := range itemBeforeDeleteHooks {
+	for _, hook := range customerBeforeDeleteHooks {
 		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
@@ -300,12 +305,12 @@ func (o *Item) doBeforeDeleteHooks(ctx context.Context, exec boil.ContextExecuto
 }
 
 // doBeforeUpsertHooks executes all "before Upsert" hooks.
-func (o *Item) doBeforeUpsertHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+func (o *Customer) doBeforeUpsertHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
 	if boil.HooksAreSkipped(ctx) {
 		return nil
 	}
 
-	for _, hook := range itemBeforeUpsertHooks {
+	for _, hook := range customerBeforeUpsertHooks {
 		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
@@ -315,12 +320,12 @@ func (o *Item) doBeforeUpsertHooks(ctx context.Context, exec boil.ContextExecuto
 }
 
 // doAfterInsertHooks executes all "after Insert" hooks.
-func (o *Item) doAfterInsertHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+func (o *Customer) doAfterInsertHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
 	if boil.HooksAreSkipped(ctx) {
 		return nil
 	}
 
-	for _, hook := range itemAfterInsertHooks {
+	for _, hook := range customerAfterInsertHooks {
 		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
@@ -330,12 +335,12 @@ func (o *Item) doAfterInsertHooks(ctx context.Context, exec boil.ContextExecutor
 }
 
 // doAfterSelectHooks executes all "after Select" hooks.
-func (o *Item) doAfterSelectHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+func (o *Customer) doAfterSelectHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
 	if boil.HooksAreSkipped(ctx) {
 		return nil
 	}
 
-	for _, hook := range itemAfterSelectHooks {
+	for _, hook := range customerAfterSelectHooks {
 		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
@@ -345,12 +350,12 @@ func (o *Item) doAfterSelectHooks(ctx context.Context, exec boil.ContextExecutor
 }
 
 // doAfterUpdateHooks executes all "after Update" hooks.
-func (o *Item) doAfterUpdateHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+func (o *Customer) doAfterUpdateHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
 	if boil.HooksAreSkipped(ctx) {
 		return nil
 	}
 
-	for _, hook := range itemAfterUpdateHooks {
+	for _, hook := range customerAfterUpdateHooks {
 		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
@@ -360,12 +365,12 @@ func (o *Item) doAfterUpdateHooks(ctx context.Context, exec boil.ContextExecutor
 }
 
 // doAfterDeleteHooks executes all "after Delete" hooks.
-func (o *Item) doAfterDeleteHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+func (o *Customer) doAfterDeleteHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
 	if boil.HooksAreSkipped(ctx) {
 		return nil
 	}
 
-	for _, hook := range itemAfterDeleteHooks {
+	for _, hook := range customerAfterDeleteHooks {
 		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
@@ -375,12 +380,12 @@ func (o *Item) doAfterDeleteHooks(ctx context.Context, exec boil.ContextExecutor
 }
 
 // doAfterUpsertHooks executes all "after Upsert" hooks.
-func (o *Item) doAfterUpsertHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+func (o *Customer) doAfterUpsertHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
 	if boil.HooksAreSkipped(ctx) {
 		return nil
 	}
 
-	for _, hook := range itemAfterUpsertHooks {
+	for _, hook := range customerAfterUpsertHooks {
 		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
@@ -389,33 +394,33 @@ func (o *Item) doAfterUpsertHooks(ctx context.Context, exec boil.ContextExecutor
 	return nil
 }
 
-// AddItemHook registers your hook function for all future operations.
-func AddItemHook(hookPoint boil.HookPoint, itemHook ItemHook) {
+// AddCustomerHook registers your hook function for all future operations.
+func AddCustomerHook(hookPoint boil.HookPoint, customerHook CustomerHook) {
 	switch hookPoint {
 	case boil.BeforeInsertHook:
-		itemBeforeInsertHooks = append(itemBeforeInsertHooks, itemHook)
+		customerBeforeInsertHooks = append(customerBeforeInsertHooks, customerHook)
 	case boil.BeforeUpdateHook:
-		itemBeforeUpdateHooks = append(itemBeforeUpdateHooks, itemHook)
+		customerBeforeUpdateHooks = append(customerBeforeUpdateHooks, customerHook)
 	case boil.BeforeDeleteHook:
-		itemBeforeDeleteHooks = append(itemBeforeDeleteHooks, itemHook)
+		customerBeforeDeleteHooks = append(customerBeforeDeleteHooks, customerHook)
 	case boil.BeforeUpsertHook:
-		itemBeforeUpsertHooks = append(itemBeforeUpsertHooks, itemHook)
+		customerBeforeUpsertHooks = append(customerBeforeUpsertHooks, customerHook)
 	case boil.AfterInsertHook:
-		itemAfterInsertHooks = append(itemAfterInsertHooks, itemHook)
+		customerAfterInsertHooks = append(customerAfterInsertHooks, customerHook)
 	case boil.AfterSelectHook:
-		itemAfterSelectHooks = append(itemAfterSelectHooks, itemHook)
+		customerAfterSelectHooks = append(customerAfterSelectHooks, customerHook)
 	case boil.AfterUpdateHook:
-		itemAfterUpdateHooks = append(itemAfterUpdateHooks, itemHook)
+		customerAfterUpdateHooks = append(customerAfterUpdateHooks, customerHook)
 	case boil.AfterDeleteHook:
-		itemAfterDeleteHooks = append(itemAfterDeleteHooks, itemHook)
+		customerAfterDeleteHooks = append(customerAfterDeleteHooks, customerHook)
 	case boil.AfterUpsertHook:
-		itemAfterUpsertHooks = append(itemAfterUpsertHooks, itemHook)
+		customerAfterUpsertHooks = append(customerAfterUpsertHooks, customerHook)
 	}
 }
 
-// One returns a single item record from the query.
-func (q itemQuery) One(ctx context.Context, exec boil.ContextExecutor) (*Item, error) {
-	o := &Item{}
+// One returns a single customer record from the query.
+func (q customerQuery) One(ctx context.Context, exec boil.ContextExecutor) (*Customer, error) {
+	o := &Customer{}
 
 	queries.SetLimit(q.Query, 1)
 
@@ -424,7 +429,7 @@ func (q itemQuery) One(ctx context.Context, exec boil.ContextExecutor) (*Item, e
 		if errors.Cause(err) == sql.ErrNoRows {
 			return nil, sql.ErrNoRows
 		}
-		return nil, errors.Wrap(err, "boiled: failed to execute a one query for item")
+		return nil, errors.Wrap(err, "boiled: failed to execute a one query for customer")
 	}
 
 	if err := o.doAfterSelectHooks(ctx, exec); err != nil {
@@ -434,16 +439,16 @@ func (q itemQuery) One(ctx context.Context, exec boil.ContextExecutor) (*Item, e
 	return o, nil
 }
 
-// All returns all Item records from the query.
-func (q itemQuery) All(ctx context.Context, exec boil.ContextExecutor) (ItemSlice, error) {
-	var o []*Item
+// All returns all Customer records from the query.
+func (q customerQuery) All(ctx context.Context, exec boil.ContextExecutor) (CustomerSlice, error) {
+	var o []*Customer
 
 	err := q.Bind(ctx, exec, &o)
 	if err != nil {
-		return nil, errors.Wrap(err, "boiled: failed to assign all query results to Item slice")
+		return nil, errors.Wrap(err, "boiled: failed to assign all query results to Customer slice")
 	}
 
-	if len(itemAfterSelectHooks) != 0 {
+	if len(customerAfterSelectHooks) != 0 {
 		for _, obj := range o {
 			if err := obj.doAfterSelectHooks(ctx, exec); err != nil {
 				return o, err
@@ -454,8 +459,8 @@ func (q itemQuery) All(ctx context.Context, exec boil.ContextExecutor) (ItemSlic
 	return o, nil
 }
 
-// Count returns the count of all Item records in the query.
-func (q itemQuery) Count(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
+// Count returns the count of all Customer records in the query.
+func (q customerQuery) Count(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
 	var count int64
 
 	queries.SetSelect(q.Query, nil)
@@ -463,14 +468,14 @@ func (q itemQuery) Count(ctx context.Context, exec boil.ContextExecutor) (int64,
 
 	err := q.Query.QueryRowContext(ctx, exec).Scan(&count)
 	if err != nil {
-		return 0, errors.Wrap(err, "boiled: failed to count item rows")
+		return 0, errors.Wrap(err, "boiled: failed to count customer rows")
 	}
 
 	return count, nil
 }
 
 // Exists checks if the row exists in the table.
-func (q itemQuery) Exists(ctx context.Context, exec boil.ContextExecutor) (bool, error) {
+func (q customerQuery) Exists(ctx context.Context, exec boil.ContextExecutor) (bool, error) {
 	var count int64
 
 	queries.SetSelect(q.Query, nil)
@@ -479,49 +484,49 @@ func (q itemQuery) Exists(ctx context.Context, exec boil.ContextExecutor) (bool,
 
 	err := q.Query.QueryRowContext(ctx, exec).Scan(&count)
 	if err != nil {
-		return false, errors.Wrap(err, "boiled: failed to check if item exists")
+		return false, errors.Wrap(err, "boiled: failed to check if customer exists")
 	}
 
 	return count > 0, nil
 }
 
-// Items retrieves all the records using an executor.
-func Items(mods ...qm.QueryMod) itemQuery {
-	mods = append(mods, qm.From("\"item\""))
-	return itemQuery{NewQuery(mods...)}
+// Customers retrieves all the records using an executor.
+func Customers(mods ...qm.QueryMod) customerQuery {
+	mods = append(mods, qm.From("\"customer\""))
+	return customerQuery{NewQuery(mods...)}
 }
 
-// FindItem retrieves a single record by ID with an executor.
+// FindCustomer retrieves a single record by ID with an executor.
 // If selectCols is empty Find will return all columns.
-func FindItem(ctx context.Context, exec boil.ContextExecutor, iD int64, selectCols ...string) (*Item, error) {
-	itemObj := &Item{}
+func FindCustomer(ctx context.Context, exec boil.ContextExecutor, iD int64, selectCols ...string) (*Customer, error) {
+	customerObj := &Customer{}
 
 	sel := "*"
 	if len(selectCols) > 0 {
 		sel = strings.Join(strmangle.IdentQuoteSlice(dialect.LQ, dialect.RQ, selectCols), ",")
 	}
 	query := fmt.Sprintf(
-		"select %s from \"item\" where \"id\"=$1", sel,
+		"select %s from \"customer\" where \"id\"=$1", sel,
 	)
 
 	q := queries.Raw(query, iD)
 
-	err := q.Bind(ctx, exec, itemObj)
+	err := q.Bind(ctx, exec, customerObj)
 	if err != nil {
 		if errors.Cause(err) == sql.ErrNoRows {
 			return nil, sql.ErrNoRows
 		}
-		return nil, errors.Wrap(err, "boiled: unable to select from item")
+		return nil, errors.Wrap(err, "boiled: unable to select from customer")
 	}
 
-	return itemObj, nil
+	return customerObj, nil
 }
 
 // Insert a single record using an executor.
 // See boil.Columns.InsertColumnSet documentation to understand column list inference for inserts.
-func (o *Item) Insert(ctx context.Context, exec boil.ContextExecutor, columns boil.Columns) error {
+func (o *Customer) Insert(ctx context.Context, exec boil.ContextExecutor, columns boil.Columns) error {
 	if o == nil {
-		return errors.New("boiled: no item provided for insertion")
+		return errors.New("boiled: no customer provided for insertion")
 	}
 
 	var err error
@@ -540,33 +545,33 @@ func (o *Item) Insert(ctx context.Context, exec boil.ContextExecutor, columns bo
 		return err
 	}
 
-	nzDefaults := queries.NonZeroDefaultSet(itemColumnsWithDefault, o)
+	nzDefaults := queries.NonZeroDefaultSet(customerColumnsWithDefault, o)
 
 	key := makeCacheKey(columns, nzDefaults)
-	itemInsertCacheMut.RLock()
-	cache, cached := itemInsertCache[key]
-	itemInsertCacheMut.RUnlock()
+	customerInsertCacheMut.RLock()
+	cache, cached := customerInsertCache[key]
+	customerInsertCacheMut.RUnlock()
 
 	if !cached {
 		wl, returnColumns := columns.InsertColumnSet(
-			itemAllColumns,
-			itemColumnsWithDefault,
-			itemColumnsWithoutDefault,
+			customerAllColumns,
+			customerColumnsWithDefault,
+			customerColumnsWithoutDefault,
 			nzDefaults,
 		)
 
-		cache.valueMapping, err = queries.BindMapping(itemType, itemMapping, wl)
+		cache.valueMapping, err = queries.BindMapping(customerType, customerMapping, wl)
 		if err != nil {
 			return err
 		}
-		cache.retMapping, err = queries.BindMapping(itemType, itemMapping, returnColumns)
+		cache.retMapping, err = queries.BindMapping(customerType, customerMapping, returnColumns)
 		if err != nil {
 			return err
 		}
 		if len(wl) != 0 {
-			cache.query = fmt.Sprintf("INSERT INTO \"item\" (\"%s\") %%sVALUES (%s)%%s", strings.Join(wl, "\",\""), strmangle.Placeholders(dialect.UseIndexPlaceholders, len(wl), 1, 1))
+			cache.query = fmt.Sprintf("INSERT INTO \"customer\" (\"%s\") %%sVALUES (%s)%%s", strings.Join(wl, "\",\""), strmangle.Placeholders(dialect.UseIndexPlaceholders, len(wl), 1, 1))
 		} else {
-			cache.query = "INSERT INTO \"item\" %sDEFAULT VALUES%s"
+			cache.query = "INSERT INTO \"customer\" %sDEFAULT VALUES%s"
 		}
 
 		var queryOutput, queryReturning string
@@ -594,22 +599,22 @@ func (o *Item) Insert(ctx context.Context, exec boil.ContextExecutor, columns bo
 	}
 
 	if err != nil {
-		return errors.Wrap(err, "boiled: unable to insert into item")
+		return errors.Wrap(err, "boiled: unable to insert into customer")
 	}
 
 	if !cached {
-		itemInsertCacheMut.Lock()
-		itemInsertCache[key] = cache
-		itemInsertCacheMut.Unlock()
+		customerInsertCacheMut.Lock()
+		customerInsertCache[key] = cache
+		customerInsertCacheMut.Unlock()
 	}
 
 	return o.doAfterInsertHooks(ctx, exec)
 }
 
-// Update uses an executor to update the Item.
+// Update uses an executor to update the Customer.
 // See boil.Columns.UpdateColumnSet documentation to understand column list inference for updates.
 // Update does not automatically update the record in case of default values. Use .Reload() to refresh the records.
-func (o *Item) Update(ctx context.Context, exec boil.ContextExecutor, columns boil.Columns) (int64, error) {
+func (o *Customer) Update(ctx context.Context, exec boil.ContextExecutor, columns boil.Columns) (int64, error) {
 	if !boil.TimestampsAreSkipped(ctx) {
 		currTime := time.Now().In(boil.GetLocation())
 
@@ -621,28 +626,28 @@ func (o *Item) Update(ctx context.Context, exec boil.ContextExecutor, columns bo
 		return 0, err
 	}
 	key := makeCacheKey(columns, nil)
-	itemUpdateCacheMut.RLock()
-	cache, cached := itemUpdateCache[key]
-	itemUpdateCacheMut.RUnlock()
+	customerUpdateCacheMut.RLock()
+	cache, cached := customerUpdateCache[key]
+	customerUpdateCacheMut.RUnlock()
 
 	if !cached {
 		wl := columns.UpdateColumnSet(
-			itemAllColumns,
-			itemPrimaryKeyColumns,
+			customerAllColumns,
+			customerPrimaryKeyColumns,
 		)
 
 		if !columns.IsWhitelist() {
 			wl = strmangle.SetComplement(wl, []string{"created_at"})
 		}
 		if len(wl) == 0 {
-			return 0, errors.New("boiled: unable to update item, could not build whitelist")
+			return 0, errors.New("boiled: unable to update customer, could not build whitelist")
 		}
 
-		cache.query = fmt.Sprintf("UPDATE \"item\" SET %s WHERE %s",
+		cache.query = fmt.Sprintf("UPDATE \"customer\" SET %s WHERE %s",
 			strmangle.SetParamNames("\"", "\"", 1, wl),
-			strmangle.WhereClause("\"", "\"", len(wl)+1, itemPrimaryKeyColumns),
+			strmangle.WhereClause("\"", "\"", len(wl)+1, customerPrimaryKeyColumns),
 		)
-		cache.valueMapping, err = queries.BindMapping(itemType, itemMapping, append(wl, itemPrimaryKeyColumns...))
+		cache.valueMapping, err = queries.BindMapping(customerType, customerMapping, append(wl, customerPrimaryKeyColumns...))
 		if err != nil {
 			return 0, err
 		}
@@ -658,42 +663,42 @@ func (o *Item) Update(ctx context.Context, exec boil.ContextExecutor, columns bo
 	var result sql.Result
 	result, err = exec.ExecContext(ctx, cache.query, values...)
 	if err != nil {
-		return 0, errors.Wrap(err, "boiled: unable to update item row")
+		return 0, errors.Wrap(err, "boiled: unable to update customer row")
 	}
 
 	rowsAff, err := result.RowsAffected()
 	if err != nil {
-		return 0, errors.Wrap(err, "boiled: failed to get rows affected by update for item")
+		return 0, errors.Wrap(err, "boiled: failed to get rows affected by update for customer")
 	}
 
 	if !cached {
-		itemUpdateCacheMut.Lock()
-		itemUpdateCache[key] = cache
-		itemUpdateCacheMut.Unlock()
+		customerUpdateCacheMut.Lock()
+		customerUpdateCache[key] = cache
+		customerUpdateCacheMut.Unlock()
 	}
 
 	return rowsAff, o.doAfterUpdateHooks(ctx, exec)
 }
 
 // UpdateAll updates all rows with the specified column values.
-func (q itemQuery) UpdateAll(ctx context.Context, exec boil.ContextExecutor, cols M) (int64, error) {
+func (q customerQuery) UpdateAll(ctx context.Context, exec boil.ContextExecutor, cols M) (int64, error) {
 	queries.SetUpdate(q.Query, cols)
 
 	result, err := q.Query.ExecContext(ctx, exec)
 	if err != nil {
-		return 0, errors.Wrap(err, "boiled: unable to update all for item")
+		return 0, errors.Wrap(err, "boiled: unable to update all for customer")
 	}
 
 	rowsAff, err := result.RowsAffected()
 	if err != nil {
-		return 0, errors.Wrap(err, "boiled: unable to retrieve rows affected for item")
+		return 0, errors.Wrap(err, "boiled: unable to retrieve rows affected for customer")
 	}
 
 	return rowsAff, nil
 }
 
 // UpdateAll updates all rows with the specified column values, using an executor.
-func (o ItemSlice) UpdateAll(ctx context.Context, exec boil.ContextExecutor, cols M) (int64, error) {
+func (o CustomerSlice) UpdateAll(ctx context.Context, exec boil.ContextExecutor, cols M) (int64, error) {
 	ln := int64(len(o))
 	if ln == 0 {
 		return 0, nil
@@ -715,13 +720,13 @@ func (o ItemSlice) UpdateAll(ctx context.Context, exec boil.ContextExecutor, col
 
 	// Append all of the primary key values for each column
 	for _, obj := range o {
-		pkeyArgs := queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(obj)), itemPrimaryKeyMapping)
+		pkeyArgs := queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(obj)), customerPrimaryKeyMapping)
 		args = append(args, pkeyArgs...)
 	}
 
-	sql := fmt.Sprintf("UPDATE \"item\" SET %s WHERE %s",
+	sql := fmt.Sprintf("UPDATE \"customer\" SET %s WHERE %s",
 		strmangle.SetParamNames("\"", "\"", 1, colNames),
-		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), len(colNames)+1, itemPrimaryKeyColumns, len(o)))
+		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), len(colNames)+1, customerPrimaryKeyColumns, len(o)))
 
 	if boil.IsDebug(ctx) {
 		writer := boil.DebugWriterFrom(ctx)
@@ -730,21 +735,21 @@ func (o ItemSlice) UpdateAll(ctx context.Context, exec boil.ContextExecutor, col
 	}
 	result, err := exec.ExecContext(ctx, sql, args...)
 	if err != nil {
-		return 0, errors.Wrap(err, "boiled: unable to update all in item slice")
+		return 0, errors.Wrap(err, "boiled: unable to update all in customer slice")
 	}
 
 	rowsAff, err := result.RowsAffected()
 	if err != nil {
-		return 0, errors.Wrap(err, "boiled: unable to retrieve rows affected all in update all item")
+		return 0, errors.Wrap(err, "boiled: unable to retrieve rows affected all in update all customer")
 	}
 	return rowsAff, nil
 }
 
 // Upsert attempts an insert using an executor, and does an update or ignore on conflict.
 // See boil.Columns documentation for how to properly use updateColumns and insertColumns.
-func (o *Item) Upsert(ctx context.Context, exec boil.ContextExecutor, updateOnConflict bool, conflictColumns []string, updateColumns, insertColumns boil.Columns) error {
+func (o *Customer) Upsert(ctx context.Context, exec boil.ContextExecutor, updateOnConflict bool, conflictColumns []string, updateColumns, insertColumns boil.Columns) error {
 	if o == nil {
-		return errors.New("boiled: no item provided for upsert")
+		return errors.New("boiled: no customer provided for upsert")
 	}
 	if !boil.TimestampsAreSkipped(ctx) {
 		currTime := time.Now().In(boil.GetLocation())
@@ -759,7 +764,7 @@ func (o *Item) Upsert(ctx context.Context, exec boil.ContextExecutor, updateOnCo
 		return err
 	}
 
-	nzDefaults := queries.NonZeroDefaultSet(itemColumnsWithDefault, o)
+	nzDefaults := queries.NonZeroDefaultSet(customerColumnsWithDefault, o)
 
 	// Build cache key in-line uglily - mysql vs psql problems
 	buf := strmangle.GetBuffer()
@@ -789,41 +794,41 @@ func (o *Item) Upsert(ctx context.Context, exec boil.ContextExecutor, updateOnCo
 	key := buf.String()
 	strmangle.PutBuffer(buf)
 
-	itemUpsertCacheMut.RLock()
-	cache, cached := itemUpsertCache[key]
-	itemUpsertCacheMut.RUnlock()
+	customerUpsertCacheMut.RLock()
+	cache, cached := customerUpsertCache[key]
+	customerUpsertCacheMut.RUnlock()
 
 	var err error
 
 	if !cached {
 		insert, ret := insertColumns.InsertColumnSet(
-			itemAllColumns,
-			itemColumnsWithDefault,
-			itemColumnsWithoutDefault,
+			customerAllColumns,
+			customerColumnsWithDefault,
+			customerColumnsWithoutDefault,
 			nzDefaults,
 		)
 		update := updateColumns.UpdateColumnSet(
-			itemAllColumns,
-			itemPrimaryKeyColumns,
+			customerAllColumns,
+			customerPrimaryKeyColumns,
 		)
 
 		if updateOnConflict && len(update) == 0 {
-			return errors.New("boiled: unable to upsert item, could not build update column list")
+			return errors.New("boiled: unable to upsert customer, could not build update column list")
 		}
 
 		conflict := conflictColumns
 		if len(conflict) == 0 {
-			conflict = make([]string, len(itemPrimaryKeyColumns))
-			copy(conflict, itemPrimaryKeyColumns)
+			conflict = make([]string, len(customerPrimaryKeyColumns))
+			copy(conflict, customerPrimaryKeyColumns)
 		}
-		cache.query = buildUpsertQueryPostgres(dialect, "\"item\"", updateOnConflict, ret, update, conflict, insert)
+		cache.query = buildUpsertQueryPostgres(dialect, "\"customer\"", updateOnConflict, ret, update, conflict, insert)
 
-		cache.valueMapping, err = queries.BindMapping(itemType, itemMapping, insert)
+		cache.valueMapping, err = queries.BindMapping(customerType, customerMapping, insert)
 		if err != nil {
 			return err
 		}
 		if len(ret) != 0 {
-			cache.retMapping, err = queries.BindMapping(itemType, itemMapping, ret)
+			cache.retMapping, err = queries.BindMapping(customerType, customerMapping, ret)
 			if err != nil {
 				return err
 			}
@@ -851,31 +856,31 @@ func (o *Item) Upsert(ctx context.Context, exec boil.ContextExecutor, updateOnCo
 		_, err = exec.ExecContext(ctx, cache.query, vals...)
 	}
 	if err != nil {
-		return errors.Wrap(err, "boiled: unable to upsert item")
+		return errors.Wrap(err, "boiled: unable to upsert customer")
 	}
 
 	if !cached {
-		itemUpsertCacheMut.Lock()
-		itemUpsertCache[key] = cache
-		itemUpsertCacheMut.Unlock()
+		customerUpsertCacheMut.Lock()
+		customerUpsertCache[key] = cache
+		customerUpsertCacheMut.Unlock()
 	}
 
 	return o.doAfterUpsertHooks(ctx, exec)
 }
 
-// Delete deletes a single Item record with an executor.
+// Delete deletes a single Customer record with an executor.
 // Delete will match against the primary key column to find the record to delete.
-func (o *Item) Delete(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
+func (o *Customer) Delete(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
 	if o == nil {
-		return 0, errors.New("boiled: no Item provided for delete")
+		return 0, errors.New("boiled: no Customer provided for delete")
 	}
 
 	if err := o.doBeforeDeleteHooks(ctx, exec); err != nil {
 		return 0, err
 	}
 
-	args := queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(o)), itemPrimaryKeyMapping)
-	sql := "DELETE FROM \"item\" WHERE \"id\"=$1"
+	args := queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(o)), customerPrimaryKeyMapping)
+	sql := "DELETE FROM \"customer\" WHERE \"id\"=$1"
 
 	if boil.IsDebug(ctx) {
 		writer := boil.DebugWriterFrom(ctx)
@@ -884,12 +889,12 @@ func (o *Item) Delete(ctx context.Context, exec boil.ContextExecutor) (int64, er
 	}
 	result, err := exec.ExecContext(ctx, sql, args...)
 	if err != nil {
-		return 0, errors.Wrap(err, "boiled: unable to delete from item")
+		return 0, errors.Wrap(err, "boiled: unable to delete from customer")
 	}
 
 	rowsAff, err := result.RowsAffected()
 	if err != nil {
-		return 0, errors.Wrap(err, "boiled: failed to get rows affected by delete for item")
+		return 0, errors.Wrap(err, "boiled: failed to get rows affected by delete for customer")
 	}
 
 	if err := o.doAfterDeleteHooks(ctx, exec); err != nil {
@@ -900,33 +905,33 @@ func (o *Item) Delete(ctx context.Context, exec boil.ContextExecutor) (int64, er
 }
 
 // DeleteAll deletes all matching rows.
-func (q itemQuery) DeleteAll(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
+func (q customerQuery) DeleteAll(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
 	if q.Query == nil {
-		return 0, errors.New("boiled: no itemQuery provided for delete all")
+		return 0, errors.New("boiled: no customerQuery provided for delete all")
 	}
 
 	queries.SetDelete(q.Query)
 
 	result, err := q.Query.ExecContext(ctx, exec)
 	if err != nil {
-		return 0, errors.Wrap(err, "boiled: unable to delete all from item")
+		return 0, errors.Wrap(err, "boiled: unable to delete all from customer")
 	}
 
 	rowsAff, err := result.RowsAffected()
 	if err != nil {
-		return 0, errors.Wrap(err, "boiled: failed to get rows affected by deleteall for item")
+		return 0, errors.Wrap(err, "boiled: failed to get rows affected by deleteall for customer")
 	}
 
 	return rowsAff, nil
 }
 
 // DeleteAll deletes all rows in the slice, using an executor.
-func (o ItemSlice) DeleteAll(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
+func (o CustomerSlice) DeleteAll(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
 	if len(o) == 0 {
 		return 0, nil
 	}
 
-	if len(itemBeforeDeleteHooks) != 0 {
+	if len(customerBeforeDeleteHooks) != 0 {
 		for _, obj := range o {
 			if err := obj.doBeforeDeleteHooks(ctx, exec); err != nil {
 				return 0, err
@@ -936,12 +941,12 @@ func (o ItemSlice) DeleteAll(ctx context.Context, exec boil.ContextExecutor) (in
 
 	var args []interface{}
 	for _, obj := range o {
-		pkeyArgs := queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(obj)), itemPrimaryKeyMapping)
+		pkeyArgs := queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(obj)), customerPrimaryKeyMapping)
 		args = append(args, pkeyArgs...)
 	}
 
-	sql := "DELETE FROM \"item\" WHERE " +
-		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), 1, itemPrimaryKeyColumns, len(o))
+	sql := "DELETE FROM \"customer\" WHERE " +
+		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), 1, customerPrimaryKeyColumns, len(o))
 
 	if boil.IsDebug(ctx) {
 		writer := boil.DebugWriterFrom(ctx)
@@ -950,15 +955,15 @@ func (o ItemSlice) DeleteAll(ctx context.Context, exec boil.ContextExecutor) (in
 	}
 	result, err := exec.ExecContext(ctx, sql, args...)
 	if err != nil {
-		return 0, errors.Wrap(err, "boiled: unable to delete all from item slice")
+		return 0, errors.Wrap(err, "boiled: unable to delete all from customer slice")
 	}
 
 	rowsAff, err := result.RowsAffected()
 	if err != nil {
-		return 0, errors.Wrap(err, "boiled: failed to get rows affected by deleteall for item")
+		return 0, errors.Wrap(err, "boiled: failed to get rows affected by deleteall for customer")
 	}
 
-	if len(itemAfterDeleteHooks) != 0 {
+	if len(customerAfterDeleteHooks) != 0 {
 		for _, obj := range o {
 			if err := obj.doAfterDeleteHooks(ctx, exec); err != nil {
 				return 0, err
@@ -971,8 +976,8 @@ func (o ItemSlice) DeleteAll(ctx context.Context, exec boil.ContextExecutor) (in
 
 // Reload refetches the object from the database
 // using the primary keys with an executor.
-func (o *Item) Reload(ctx context.Context, exec boil.ContextExecutor) error {
-	ret, err := FindItem(ctx, exec, o.ID)
+func (o *Customer) Reload(ctx context.Context, exec boil.ContextExecutor) error {
+	ret, err := FindCustomer(ctx, exec, o.ID)
 	if err != nil {
 		return err
 	}
@@ -983,26 +988,26 @@ func (o *Item) Reload(ctx context.Context, exec boil.ContextExecutor) error {
 
 // ReloadAll refetches every row with matching primary key column values
 // and overwrites the original object slice with the newly updated slice.
-func (o *ItemSlice) ReloadAll(ctx context.Context, exec boil.ContextExecutor) error {
+func (o *CustomerSlice) ReloadAll(ctx context.Context, exec boil.ContextExecutor) error {
 	if o == nil || len(*o) == 0 {
 		return nil
 	}
 
-	slice := ItemSlice{}
+	slice := CustomerSlice{}
 	var args []interface{}
 	for _, obj := range *o {
-		pkeyArgs := queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(obj)), itemPrimaryKeyMapping)
+		pkeyArgs := queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(obj)), customerPrimaryKeyMapping)
 		args = append(args, pkeyArgs...)
 	}
 
-	sql := "SELECT \"item\".* FROM \"item\" WHERE " +
-		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), 1, itemPrimaryKeyColumns, len(*o))
+	sql := "SELECT \"customer\".* FROM \"customer\" WHERE " +
+		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), 1, customerPrimaryKeyColumns, len(*o))
 
 	q := queries.Raw(sql, args...)
 
 	err := q.Bind(ctx, exec, &slice)
 	if err != nil {
-		return errors.Wrap(err, "boiled: unable to reload all in ItemSlice")
+		return errors.Wrap(err, "boiled: unable to reload all in CustomerSlice")
 	}
 
 	*o = slice
@@ -1010,10 +1015,10 @@ func (o *ItemSlice) ReloadAll(ctx context.Context, exec boil.ContextExecutor) er
 	return nil
 }
 
-// ItemExists checks if the Item row exists.
-func ItemExists(ctx context.Context, exec boil.ContextExecutor, iD int64) (bool, error) {
+// CustomerExists checks if the Customer row exists.
+func CustomerExists(ctx context.Context, exec boil.ContextExecutor, iD int64) (bool, error) {
 	var exists bool
-	sql := "select exists(select 1 from \"item\" where \"id\"=$1 limit 1)"
+	sql := "select exists(select 1 from \"customer\" where \"id\"=$1 limit 1)"
 
 	if boil.IsDebug(ctx) {
 		writer := boil.DebugWriterFrom(ctx)
@@ -1024,7 +1029,7 @@ func ItemExists(ctx context.Context, exec boil.ContextExecutor, iD int64) (bool,
 
 	err := row.Scan(&exists)
 	if err != nil {
-		return false, errors.Wrap(err, "boiled: unable to check if item exists")
+		return false, errors.Wrap(err, "boiled: unable to check if customer exists")
 	}
 
 	return exists, nil

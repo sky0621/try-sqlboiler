@@ -21,24 +21,24 @@ var (
 	_ = queries.Equal
 )
 
-func testItems(t *testing.T) {
+func testCustomers(t *testing.T) {
 	t.Parallel()
 
-	query := Items()
+	query := Customers()
 
 	if query.Query == nil {
 		t.Error("expected a query, got nothing")
 	}
 }
 
-func testItemsDelete(t *testing.T) {
+func testCustomersDelete(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Item{}
-	if err = randomize.Struct(seed, o, itemDBTypes, true, itemColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Item struct: %s", err)
+	o := &Customer{}
+	if err = randomize.Struct(seed, o, customerDBTypes, true, customerColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize Customer struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -54,7 +54,7 @@ func testItemsDelete(t *testing.T) {
 		t.Error("should only have deleted one row, but affected:", rowsAff)
 	}
 
-	count, err := Items().Count(ctx, tx)
+	count, err := Customers().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -64,14 +64,14 @@ func testItemsDelete(t *testing.T) {
 	}
 }
 
-func testItemsQueryDeleteAll(t *testing.T) {
+func testCustomersQueryDeleteAll(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Item{}
-	if err = randomize.Struct(seed, o, itemDBTypes, true, itemColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Item struct: %s", err)
+	o := &Customer{}
+	if err = randomize.Struct(seed, o, customerDBTypes, true, customerColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize Customer struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -81,13 +81,13 @@ func testItemsQueryDeleteAll(t *testing.T) {
 		t.Error(err)
 	}
 
-	if rowsAff, err := Items().DeleteAll(ctx, tx); err != nil {
+	if rowsAff, err := Customers().DeleteAll(ctx, tx); err != nil {
 		t.Error(err)
 	} else if rowsAff != 1 {
 		t.Error("should only have deleted one row, but affected:", rowsAff)
 	}
 
-	count, err := Items().Count(ctx, tx)
+	count, err := Customers().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -97,14 +97,14 @@ func testItemsQueryDeleteAll(t *testing.T) {
 	}
 }
 
-func testItemsSliceDeleteAll(t *testing.T) {
+func testCustomersSliceDeleteAll(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Item{}
-	if err = randomize.Struct(seed, o, itemDBTypes, true, itemColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Item struct: %s", err)
+	o := &Customer{}
+	if err = randomize.Struct(seed, o, customerDBTypes, true, customerColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize Customer struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -114,7 +114,7 @@ func testItemsSliceDeleteAll(t *testing.T) {
 		t.Error(err)
 	}
 
-	slice := ItemSlice{o}
+	slice := CustomerSlice{o}
 
 	if rowsAff, err := slice.DeleteAll(ctx, tx); err != nil {
 		t.Error(err)
@@ -122,7 +122,7 @@ func testItemsSliceDeleteAll(t *testing.T) {
 		t.Error("should only have deleted one row, but affected:", rowsAff)
 	}
 
-	count, err := Items().Count(ctx, tx)
+	count, err := Customers().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -132,14 +132,14 @@ func testItemsSliceDeleteAll(t *testing.T) {
 	}
 }
 
-func testItemsExists(t *testing.T) {
+func testCustomersExists(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Item{}
-	if err = randomize.Struct(seed, o, itemDBTypes, true, itemColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Item struct: %s", err)
+	o := &Customer{}
+	if err = randomize.Struct(seed, o, customerDBTypes, true, customerColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize Customer struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -149,23 +149,23 @@ func testItemsExists(t *testing.T) {
 		t.Error(err)
 	}
 
-	e, err := ItemExists(ctx, tx, o.ID)
+	e, err := CustomerExists(ctx, tx, o.ID)
 	if err != nil {
-		t.Errorf("Unable to check if Item exists: %s", err)
+		t.Errorf("Unable to check if Customer exists: %s", err)
 	}
 	if !e {
-		t.Errorf("Expected ItemExists to return true, but got false.")
+		t.Errorf("Expected CustomerExists to return true, but got false.")
 	}
 }
 
-func testItemsFind(t *testing.T) {
+func testCustomersFind(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Item{}
-	if err = randomize.Struct(seed, o, itemDBTypes, true, itemColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Item struct: %s", err)
+	o := &Customer{}
+	if err = randomize.Struct(seed, o, customerDBTypes, true, customerColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize Customer struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -175,24 +175,24 @@ func testItemsFind(t *testing.T) {
 		t.Error(err)
 	}
 
-	itemFound, err := FindItem(ctx, tx, o.ID)
+	customerFound, err := FindCustomer(ctx, tx, o.ID)
 	if err != nil {
 		t.Error(err)
 	}
 
-	if itemFound == nil {
+	if customerFound == nil {
 		t.Error("want a record, got nil")
 	}
 }
 
-func testItemsBind(t *testing.T) {
+func testCustomersBind(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Item{}
-	if err = randomize.Struct(seed, o, itemDBTypes, true, itemColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Item struct: %s", err)
+	o := &Customer{}
+	if err = randomize.Struct(seed, o, customerDBTypes, true, customerColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize Customer struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -202,19 +202,19 @@ func testItemsBind(t *testing.T) {
 		t.Error(err)
 	}
 
-	if err = Items().Bind(ctx, tx, o); err != nil {
+	if err = Customers().Bind(ctx, tx, o); err != nil {
 		t.Error(err)
 	}
 }
 
-func testItemsOne(t *testing.T) {
+func testCustomersOne(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Item{}
-	if err = randomize.Struct(seed, o, itemDBTypes, true, itemColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Item struct: %s", err)
+	o := &Customer{}
+	if err = randomize.Struct(seed, o, customerDBTypes, true, customerColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize Customer struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -224,38 +224,38 @@ func testItemsOne(t *testing.T) {
 		t.Error(err)
 	}
 
-	if x, err := Items().One(ctx, tx); err != nil {
+	if x, err := Customers().One(ctx, tx); err != nil {
 		t.Error(err)
 	} else if x == nil {
 		t.Error("expected to get a non nil record")
 	}
 }
 
-func testItemsAll(t *testing.T) {
+func testCustomersAll(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	itemOne := &Item{}
-	itemTwo := &Item{}
-	if err = randomize.Struct(seed, itemOne, itemDBTypes, false, itemColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Item struct: %s", err)
+	customerOne := &Customer{}
+	customerTwo := &Customer{}
+	if err = randomize.Struct(seed, customerOne, customerDBTypes, false, customerColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize Customer struct: %s", err)
 	}
-	if err = randomize.Struct(seed, itemTwo, itemDBTypes, false, itemColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Item struct: %s", err)
+	if err = randomize.Struct(seed, customerTwo, customerDBTypes, false, customerColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize Customer struct: %s", err)
 	}
 
 	ctx := context.Background()
 	tx := MustTx(boil.BeginTx(ctx, nil))
 	defer func() { _ = tx.Rollback() }()
-	if err = itemOne.Insert(ctx, tx, boil.Infer()); err != nil {
+	if err = customerOne.Insert(ctx, tx, boil.Infer()); err != nil {
 		t.Error(err)
 	}
-	if err = itemTwo.Insert(ctx, tx, boil.Infer()); err != nil {
+	if err = customerTwo.Insert(ctx, tx, boil.Infer()); err != nil {
 		t.Error(err)
 	}
 
-	slice, err := Items().All(ctx, tx)
+	slice, err := Customers().All(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -265,31 +265,31 @@ func testItemsAll(t *testing.T) {
 	}
 }
 
-func testItemsCount(t *testing.T) {
+func testCustomersCount(t *testing.T) {
 	t.Parallel()
 
 	var err error
 	seed := randomize.NewSeed()
-	itemOne := &Item{}
-	itemTwo := &Item{}
-	if err = randomize.Struct(seed, itemOne, itemDBTypes, false, itemColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Item struct: %s", err)
+	customerOne := &Customer{}
+	customerTwo := &Customer{}
+	if err = randomize.Struct(seed, customerOne, customerDBTypes, false, customerColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize Customer struct: %s", err)
 	}
-	if err = randomize.Struct(seed, itemTwo, itemDBTypes, false, itemColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Item struct: %s", err)
+	if err = randomize.Struct(seed, customerTwo, customerDBTypes, false, customerColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize Customer struct: %s", err)
 	}
 
 	ctx := context.Background()
 	tx := MustTx(boil.BeginTx(ctx, nil))
 	defer func() { _ = tx.Rollback() }()
-	if err = itemOne.Insert(ctx, tx, boil.Infer()); err != nil {
+	if err = customerOne.Insert(ctx, tx, boil.Infer()); err != nil {
 		t.Error(err)
 	}
-	if err = itemTwo.Insert(ctx, tx, boil.Infer()); err != nil {
+	if err = customerTwo.Insert(ctx, tx, boil.Infer()); err != nil {
 		t.Error(err)
 	}
 
-	count, err := Items().Count(ctx, tx)
+	count, err := Customers().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -299,155 +299,155 @@ func testItemsCount(t *testing.T) {
 	}
 }
 
-func itemBeforeInsertHook(ctx context.Context, e boil.ContextExecutor, o *Item) error {
-	*o = Item{}
+func customerBeforeInsertHook(ctx context.Context, e boil.ContextExecutor, o *Customer) error {
+	*o = Customer{}
 	return nil
 }
 
-func itemAfterInsertHook(ctx context.Context, e boil.ContextExecutor, o *Item) error {
-	*o = Item{}
+func customerAfterInsertHook(ctx context.Context, e boil.ContextExecutor, o *Customer) error {
+	*o = Customer{}
 	return nil
 }
 
-func itemAfterSelectHook(ctx context.Context, e boil.ContextExecutor, o *Item) error {
-	*o = Item{}
+func customerAfterSelectHook(ctx context.Context, e boil.ContextExecutor, o *Customer) error {
+	*o = Customer{}
 	return nil
 }
 
-func itemBeforeUpdateHook(ctx context.Context, e boil.ContextExecutor, o *Item) error {
-	*o = Item{}
+func customerBeforeUpdateHook(ctx context.Context, e boil.ContextExecutor, o *Customer) error {
+	*o = Customer{}
 	return nil
 }
 
-func itemAfterUpdateHook(ctx context.Context, e boil.ContextExecutor, o *Item) error {
-	*o = Item{}
+func customerAfterUpdateHook(ctx context.Context, e boil.ContextExecutor, o *Customer) error {
+	*o = Customer{}
 	return nil
 }
 
-func itemBeforeDeleteHook(ctx context.Context, e boil.ContextExecutor, o *Item) error {
-	*o = Item{}
+func customerBeforeDeleteHook(ctx context.Context, e boil.ContextExecutor, o *Customer) error {
+	*o = Customer{}
 	return nil
 }
 
-func itemAfterDeleteHook(ctx context.Context, e boil.ContextExecutor, o *Item) error {
-	*o = Item{}
+func customerAfterDeleteHook(ctx context.Context, e boil.ContextExecutor, o *Customer) error {
+	*o = Customer{}
 	return nil
 }
 
-func itemBeforeUpsertHook(ctx context.Context, e boil.ContextExecutor, o *Item) error {
-	*o = Item{}
+func customerBeforeUpsertHook(ctx context.Context, e boil.ContextExecutor, o *Customer) error {
+	*o = Customer{}
 	return nil
 }
 
-func itemAfterUpsertHook(ctx context.Context, e boil.ContextExecutor, o *Item) error {
-	*o = Item{}
+func customerAfterUpsertHook(ctx context.Context, e boil.ContextExecutor, o *Customer) error {
+	*o = Customer{}
 	return nil
 }
 
-func testItemsHooks(t *testing.T) {
+func testCustomersHooks(t *testing.T) {
 	t.Parallel()
 
 	var err error
 
 	ctx := context.Background()
-	empty := &Item{}
-	o := &Item{}
+	empty := &Customer{}
+	o := &Customer{}
 
 	seed := randomize.NewSeed()
-	if err = randomize.Struct(seed, o, itemDBTypes, false); err != nil {
-		t.Errorf("Unable to randomize Item object: %s", err)
+	if err = randomize.Struct(seed, o, customerDBTypes, false); err != nil {
+		t.Errorf("Unable to randomize Customer object: %s", err)
 	}
 
-	AddItemHook(boil.BeforeInsertHook, itemBeforeInsertHook)
+	AddCustomerHook(boil.BeforeInsertHook, customerBeforeInsertHook)
 	if err = o.doBeforeInsertHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doBeforeInsertHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected BeforeInsertHook function to empty object, but got: %#v", o)
 	}
-	itemBeforeInsertHooks = []ItemHook{}
+	customerBeforeInsertHooks = []CustomerHook{}
 
-	AddItemHook(boil.AfterInsertHook, itemAfterInsertHook)
+	AddCustomerHook(boil.AfterInsertHook, customerAfterInsertHook)
 	if err = o.doAfterInsertHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doAfterInsertHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected AfterInsertHook function to empty object, but got: %#v", o)
 	}
-	itemAfterInsertHooks = []ItemHook{}
+	customerAfterInsertHooks = []CustomerHook{}
 
-	AddItemHook(boil.AfterSelectHook, itemAfterSelectHook)
+	AddCustomerHook(boil.AfterSelectHook, customerAfterSelectHook)
 	if err = o.doAfterSelectHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doAfterSelectHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected AfterSelectHook function to empty object, but got: %#v", o)
 	}
-	itemAfterSelectHooks = []ItemHook{}
+	customerAfterSelectHooks = []CustomerHook{}
 
-	AddItemHook(boil.BeforeUpdateHook, itemBeforeUpdateHook)
+	AddCustomerHook(boil.BeforeUpdateHook, customerBeforeUpdateHook)
 	if err = o.doBeforeUpdateHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doBeforeUpdateHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected BeforeUpdateHook function to empty object, but got: %#v", o)
 	}
-	itemBeforeUpdateHooks = []ItemHook{}
+	customerBeforeUpdateHooks = []CustomerHook{}
 
-	AddItemHook(boil.AfterUpdateHook, itemAfterUpdateHook)
+	AddCustomerHook(boil.AfterUpdateHook, customerAfterUpdateHook)
 	if err = o.doAfterUpdateHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doAfterUpdateHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected AfterUpdateHook function to empty object, but got: %#v", o)
 	}
-	itemAfterUpdateHooks = []ItemHook{}
+	customerAfterUpdateHooks = []CustomerHook{}
 
-	AddItemHook(boil.BeforeDeleteHook, itemBeforeDeleteHook)
+	AddCustomerHook(boil.BeforeDeleteHook, customerBeforeDeleteHook)
 	if err = o.doBeforeDeleteHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doBeforeDeleteHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected BeforeDeleteHook function to empty object, but got: %#v", o)
 	}
-	itemBeforeDeleteHooks = []ItemHook{}
+	customerBeforeDeleteHooks = []CustomerHook{}
 
-	AddItemHook(boil.AfterDeleteHook, itemAfterDeleteHook)
+	AddCustomerHook(boil.AfterDeleteHook, customerAfterDeleteHook)
 	if err = o.doAfterDeleteHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doAfterDeleteHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected AfterDeleteHook function to empty object, but got: %#v", o)
 	}
-	itemAfterDeleteHooks = []ItemHook{}
+	customerAfterDeleteHooks = []CustomerHook{}
 
-	AddItemHook(boil.BeforeUpsertHook, itemBeforeUpsertHook)
+	AddCustomerHook(boil.BeforeUpsertHook, customerBeforeUpsertHook)
 	if err = o.doBeforeUpsertHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doBeforeUpsertHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected BeforeUpsertHook function to empty object, but got: %#v", o)
 	}
-	itemBeforeUpsertHooks = []ItemHook{}
+	customerBeforeUpsertHooks = []CustomerHook{}
 
-	AddItemHook(boil.AfterUpsertHook, itemAfterUpsertHook)
+	AddCustomerHook(boil.AfterUpsertHook, customerAfterUpsertHook)
 	if err = o.doAfterUpsertHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doAfterUpsertHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected AfterUpsertHook function to empty object, but got: %#v", o)
 	}
-	itemAfterUpsertHooks = []ItemHook{}
+	customerAfterUpsertHooks = []CustomerHook{}
 }
 
-func testItemsInsert(t *testing.T) {
+func testCustomersInsert(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Item{}
-	if err = randomize.Struct(seed, o, itemDBTypes, true, itemColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Item struct: %s", err)
+	o := &Customer{}
+	if err = randomize.Struct(seed, o, customerDBTypes, true, customerColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize Customer struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -457,7 +457,7 @@ func testItemsInsert(t *testing.T) {
 		t.Error(err)
 	}
 
-	count, err := Items().Count(ctx, tx)
+	count, err := Customers().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -467,24 +467,24 @@ func testItemsInsert(t *testing.T) {
 	}
 }
 
-func testItemsInsertWhitelist(t *testing.T) {
+func testCustomersInsertWhitelist(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Item{}
-	if err = randomize.Struct(seed, o, itemDBTypes, true); err != nil {
-		t.Errorf("Unable to randomize Item struct: %s", err)
+	o := &Customer{}
+	if err = randomize.Struct(seed, o, customerDBTypes, true); err != nil {
+		t.Errorf("Unable to randomize Customer struct: %s", err)
 	}
 
 	ctx := context.Background()
 	tx := MustTx(boil.BeginTx(ctx, nil))
 	defer func() { _ = tx.Rollback() }()
-	if err = o.Insert(ctx, tx, boil.Whitelist(itemColumnsWithoutDefault...)); err != nil {
+	if err = o.Insert(ctx, tx, boil.Whitelist(customerColumnsWithoutDefault...)); err != nil {
 		t.Error(err)
 	}
 
-	count, err := Items().Count(ctx, tx)
+	count, err := Customers().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -494,14 +494,14 @@ func testItemsInsertWhitelist(t *testing.T) {
 	}
 }
 
-func testItemsReload(t *testing.T) {
+func testCustomersReload(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Item{}
-	if err = randomize.Struct(seed, o, itemDBTypes, true, itemColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Item struct: %s", err)
+	o := &Customer{}
+	if err = randomize.Struct(seed, o, customerDBTypes, true, customerColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize Customer struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -516,14 +516,14 @@ func testItemsReload(t *testing.T) {
 	}
 }
 
-func testItemsReloadAll(t *testing.T) {
+func testCustomersReloadAll(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Item{}
-	if err = randomize.Struct(seed, o, itemDBTypes, true, itemColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Item struct: %s", err)
+	o := &Customer{}
+	if err = randomize.Struct(seed, o, customerDBTypes, true, customerColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize Customer struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -533,21 +533,21 @@ func testItemsReloadAll(t *testing.T) {
 		t.Error(err)
 	}
 
-	slice := ItemSlice{o}
+	slice := CustomerSlice{o}
 
 	if err = slice.ReloadAll(ctx, tx); err != nil {
 		t.Error(err)
 	}
 }
 
-func testItemsSelect(t *testing.T) {
+func testCustomersSelect(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Item{}
-	if err = randomize.Struct(seed, o, itemDBTypes, true, itemColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Item struct: %s", err)
+	o := &Customer{}
+	if err = randomize.Struct(seed, o, customerDBTypes, true, customerColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize Customer struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -557,7 +557,7 @@ func testItemsSelect(t *testing.T) {
 		t.Error(err)
 	}
 
-	slice, err := Items().All(ctx, tx)
+	slice, err := Customers().All(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -568,25 +568,25 @@ func testItemsSelect(t *testing.T) {
 }
 
 var (
-	itemDBTypes = map[string]string{`ID`: `bigint`, `Name`: `character varying`, `Price`: `integer`, `CreatedBy`: `character varying`, `CreatedAt`: `timestamp with time zone`, `UpdatedBy`: `character varying`, `UpdatedAt`: `timestamp with time zone`}
-	_           = bytes.MinRead
+	customerDBTypes = map[string]string{`ID`: `bigint`, `Name`: `character varying`, `Age`: `integer`, `Prefectures`: `character varying`, `CreatedBy`: `character varying`, `CreatedAt`: `timestamp with time zone`, `UpdatedBy`: `character varying`, `UpdatedAt`: `timestamp with time zone`}
+	_               = bytes.MinRead
 )
 
-func testItemsUpdate(t *testing.T) {
+func testCustomersUpdate(t *testing.T) {
 	t.Parallel()
 
-	if 0 == len(itemPrimaryKeyColumns) {
+	if 0 == len(customerPrimaryKeyColumns) {
 		t.Skip("Skipping table with no primary key columns")
 	}
-	if len(itemAllColumns) == len(itemPrimaryKeyColumns) {
+	if len(customerAllColumns) == len(customerPrimaryKeyColumns) {
 		t.Skip("Skipping table with only primary key columns")
 	}
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Item{}
-	if err = randomize.Struct(seed, o, itemDBTypes, true, itemColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Item struct: %s", err)
+	o := &Customer{}
+	if err = randomize.Struct(seed, o, customerDBTypes, true, customerColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize Customer struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -596,7 +596,7 @@ func testItemsUpdate(t *testing.T) {
 		t.Error(err)
 	}
 
-	count, err := Items().Count(ctx, tx)
+	count, err := Customers().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -605,8 +605,8 @@ func testItemsUpdate(t *testing.T) {
 		t.Error("want one record, got:", count)
 	}
 
-	if err = randomize.Struct(seed, o, itemDBTypes, true, itemPrimaryKeyColumns...); err != nil {
-		t.Errorf("Unable to randomize Item struct: %s", err)
+	if err = randomize.Struct(seed, o, customerDBTypes, true, customerPrimaryKeyColumns...); err != nil {
+		t.Errorf("Unable to randomize Customer struct: %s", err)
 	}
 
 	if rowsAff, err := o.Update(ctx, tx, boil.Infer()); err != nil {
@@ -616,18 +616,18 @@ func testItemsUpdate(t *testing.T) {
 	}
 }
 
-func testItemsSliceUpdateAll(t *testing.T) {
+func testCustomersSliceUpdateAll(t *testing.T) {
 	t.Parallel()
 
-	if len(itemAllColumns) == len(itemPrimaryKeyColumns) {
+	if len(customerAllColumns) == len(customerPrimaryKeyColumns) {
 		t.Skip("Skipping table with only primary key columns")
 	}
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Item{}
-	if err = randomize.Struct(seed, o, itemDBTypes, true, itemColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Item struct: %s", err)
+	o := &Customer{}
+	if err = randomize.Struct(seed, o, customerDBTypes, true, customerColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize Customer struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -637,7 +637,7 @@ func testItemsSliceUpdateAll(t *testing.T) {
 		t.Error(err)
 	}
 
-	count, err := Items().Count(ctx, tx)
+	count, err := Customers().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -646,18 +646,18 @@ func testItemsSliceUpdateAll(t *testing.T) {
 		t.Error("want one record, got:", count)
 	}
 
-	if err = randomize.Struct(seed, o, itemDBTypes, true, itemPrimaryKeyColumns...); err != nil {
-		t.Errorf("Unable to randomize Item struct: %s", err)
+	if err = randomize.Struct(seed, o, customerDBTypes, true, customerPrimaryKeyColumns...); err != nil {
+		t.Errorf("Unable to randomize Customer struct: %s", err)
 	}
 
 	// Remove Primary keys and unique columns from what we plan to update
 	var fields []string
-	if strmangle.StringSliceMatch(itemAllColumns, itemPrimaryKeyColumns) {
-		fields = itemAllColumns
+	if strmangle.StringSliceMatch(customerAllColumns, customerPrimaryKeyColumns) {
+		fields = customerAllColumns
 	} else {
 		fields = strmangle.SetComplement(
-			itemAllColumns,
-			itemPrimaryKeyColumns,
+			customerAllColumns,
+			customerPrimaryKeyColumns,
 		)
 	}
 
@@ -675,7 +675,7 @@ func testItemsSliceUpdateAll(t *testing.T) {
 		}
 	}
 
-	slice := ItemSlice{o}
+	slice := CustomerSlice{o}
 	if rowsAff, err := slice.UpdateAll(ctx, tx, updateMap); err != nil {
 		t.Error(err)
 	} else if rowsAff != 1 {
@@ -683,29 +683,29 @@ func testItemsSliceUpdateAll(t *testing.T) {
 	}
 }
 
-func testItemsUpsert(t *testing.T) {
+func testCustomersUpsert(t *testing.T) {
 	t.Parallel()
 
-	if len(itemAllColumns) == len(itemPrimaryKeyColumns) {
+	if len(customerAllColumns) == len(customerPrimaryKeyColumns) {
 		t.Skip("Skipping table with only primary key columns")
 	}
 
 	seed := randomize.NewSeed()
 	var err error
 	// Attempt the INSERT side of an UPSERT
-	o := Item{}
-	if err = randomize.Struct(seed, &o, itemDBTypes, true); err != nil {
-		t.Errorf("Unable to randomize Item struct: %s", err)
+	o := Customer{}
+	if err = randomize.Struct(seed, &o, customerDBTypes, true); err != nil {
+		t.Errorf("Unable to randomize Customer struct: %s", err)
 	}
 
 	ctx := context.Background()
 	tx := MustTx(boil.BeginTx(ctx, nil))
 	defer func() { _ = tx.Rollback() }()
 	if err = o.Upsert(ctx, tx, false, nil, boil.Infer(), boil.Infer()); err != nil {
-		t.Errorf("Unable to upsert Item: %s", err)
+		t.Errorf("Unable to upsert Customer: %s", err)
 	}
 
-	count, err := Items().Count(ctx, tx)
+	count, err := Customers().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -714,15 +714,15 @@ func testItemsUpsert(t *testing.T) {
 	}
 
 	// Attempt the UPDATE side of an UPSERT
-	if err = randomize.Struct(seed, &o, itemDBTypes, false, itemPrimaryKeyColumns...); err != nil {
-		t.Errorf("Unable to randomize Item struct: %s", err)
+	if err = randomize.Struct(seed, &o, customerDBTypes, false, customerPrimaryKeyColumns...); err != nil {
+		t.Errorf("Unable to randomize Customer struct: %s", err)
 	}
 
 	if err = o.Upsert(ctx, tx, true, nil, boil.Infer(), boil.Infer()); err != nil {
-		t.Errorf("Unable to upsert Item: %s", err)
+		t.Errorf("Unable to upsert Customer: %s", err)
 	}
 
-	count, err = Items().Count(ctx, tx)
+	count, err = Customers().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}

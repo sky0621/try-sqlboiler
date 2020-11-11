@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/sky0621/try-sqlboiler/src/boiled"
@@ -9,7 +10,8 @@ import (
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 	"github.com/rs/zerolog/log"
-	"github.com/volatiletech/sqlboiler/boil"
+	"github.com/volatiletech/sqlboiler/v4/boil"
+	"github.com/volatiletech/sqlboiler/v4/queries/qm"
 )
 
 func main() {
@@ -33,11 +35,36 @@ func main() {
 	log.Debug().Msg("setupLocalRDB___END")
 
 	ctx := context.Background()
-	item, err := boiled.FindItem(ctx, db, 1)
+
+	orderKey := "name"
+	orderDirection := "ASC"
+	table := boiled.TableNames.Customer
+	baseCondition := "1=1"
+	compareSymbol := ">"
+	decodedCursor := 5
+	limit := 5
+
+	q := `
+		SELECT * FROM (
+			SELECT ROW_NUMBER() OVER (ORDER BY %s %s) AS rownum, *
+			FROM %s
+		) AS tmp
+		WHERE %s
+		AND rownum %s %d
+		LIMIT %d
+	`
+	results, err := boiled.Customers(qm.SQL(fmt.Sprintf(q,
+		orderKey, orderDirection,
+		table,
+		baseCondition, compareSymbol, decodedCursor,
+		limit,
+	))).All(ctx, db)
 	if err != nil {
 		log.Err(err).Send()
 		return
 	}
 
-	log.Info().Msgf("%#+v", item)
+	for _, result := range results {
+		log.Info().Msgf("%#+v", result)
+	}
 }

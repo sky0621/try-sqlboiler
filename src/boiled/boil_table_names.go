@@ -4,9 +4,9 @@
 package boiled
 
 var TableNames = struct {
-	Item      string
+	Customer  string
 	Migration string
 }{
-	Item:      "item",
+	Customer:  "customer",
 	Migration: "migration",
 }
