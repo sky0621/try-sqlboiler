@@ -1,0 +1,10 @@
+output   = "boiled"
+pkgname  = "boiled"
+
+[psql]
+  host   = "localhost"
+  port   = 15432
+  dbname = "localdb"
+  user   = "postgres"
+  pass   = "yuckyjuice"
+  sslmode= "disable"
